@@ -8,7 +8,7 @@ export const siteConfig = {
   // Imagens e Identidade Visual
   // Para trocar a logo, você pode substituir o arquivo logo.png na pasta public/
   // Ou colocar o link de uma imagem externa aqui (ex: "https://seusite.com/logo.png")
-  logoUrl: "/logo.png",
+  logoUrl: "/Logo.png",
   
   // Textos Principais
   companyName: "Real Legacy",
