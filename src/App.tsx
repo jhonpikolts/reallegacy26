@@ -116,16 +116,18 @@ export default function App() {
           </motion.div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-            {["servicos", "beneficios"].map((item) => (
-              <a 
-                key={item}
-                href={`#${item}`} 
-                className="relative hover:text-legacy-gold transition-colors group capitalize"
-              >
-                {item}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-legacy-gold transition-all group-hover:w-full" />
-              </a>
-            ))}
+            <a href="#servicos" className="relative hover:text-legacy-gold transition-colors group">
+              Serviços
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-legacy-gold transition-all group-hover:w-full" />
+            </a>
+            <a href="#beneficios" className="relative hover:text-legacy-gold transition-colors group">
+              Sobre Nós
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-legacy-gold transition-all group-hover:w-full" />
+            </a>
+            <a href={whatsappUrl} className="relative hover:text-legacy-gold transition-colors group">
+              Cotação
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-legacy-gold transition-all group-hover:w-full" />
+            </a>
           </div>
 
           <motion.a 
@@ -146,20 +148,22 @@ export default function App() {
         <section className="relative py-24 lg:py-32 overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-legacy-gold/5 rounded-full blur-[120px] -z-10" />
           
-          <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+          <div className="w-full relative z-10 px-0 sm:px-6 mx-auto">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-12 flex justify-center"
+              className="mb-12"
             >
               <img 
                 src={siteConfig.logoUrl} 
                 alt={`${siteConfig.companyName} Logo`} 
-                className="w-full max-w-[400px] h-auto rounded-3xl shadow-2xl shadow-legacy-gold/10"
+                className="w-full h-auto sm:rounded-3xl shadow-2xl shadow-legacy-gold/10 object-cover"
                 referrerPolicy="no-referrer"
               />
             </motion.div>
+          </div>
 
+          <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -438,7 +442,7 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-legacy-blue-dark border-t border-white/5 py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
                 <img src={siteConfig.logoUrl} alt={siteConfig.companyName} className="h-10 w-auto object-contain" referrerPolicy="no-referrer" loading="lazy" />
@@ -474,16 +478,6 @@ export default function App() {
                   <MapPin className="w-4 h-4 text-legacy-gold" />
                   Atendimento Online Global
                 </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-white uppercase text-xs tracking-widest">Acesso Rápido</h4>
-              <ul className="space-y-4 text-sm text-gray-400 underline-offset-4">
-                <li><a href="#servicos" className="hover:text-white hover:underline transition-colors">Serviços</a></li>
-                <li><a href="#beneficios" className="hover:text-white hover:underline transition-colors">Sobre Nós</a></li>
-                <li><a href={whatsappUrl} className="hover:text-white hover:underline transition-colors">Cotação</a></li>
-                <li><a href="#" className="hover:text-white hover:underline transition-colors">Políticas</a></li>
               </ul>
             </div>
           </div>
