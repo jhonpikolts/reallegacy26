@@ -56,7 +56,7 @@ export default function App() {
     },
     {
       name: "Família Costa",
-      role: "Mudança Residencial",
+      role: "Visto D1",
       text: "Fazer uma mudança internacional com duas crianças parecia um pesadelo, mas a assessoria da equipe tornou tudo tão simples e seguro. Gratidão imensa!",
       image: "https://i.pravatar.cc/150?img=33"
     }
@@ -168,10 +168,14 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-legacy-gold text-xs font-bold uppercase tracking-widest mb-6"
+              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-legacy-gold/10 border border-legacy-gold/40 text-legacy-gold text-sm font-black uppercase tracking-widest mb-6 shadow-[0_0_30px_rgba(212,175,55,0.3)]"
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-legacy-gold animate-pulse" />
-              Especialista em Portugal
+              <motion.div 
+                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.7, 1] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                className="w-2.5 h-2.5 rounded-full bg-legacy-gold shadow-[0_0_8px_#D4AF37]" 
+              />
+              Especialista em Brasil x Portugal
             </motion.div>
             
             <motion.h1 
@@ -201,6 +205,8 @@ export default function App() {
             >
               <a 
                 href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto px-8 py-4 rounded-xl gold-gradient text-legacy-navy font-black text-lg hover:shadow-2xl hover:shadow-legacy-gold/30 transition-all flex items-center justify-center gap-2"
               >
                 Solicitar Cotação Agora
@@ -241,7 +247,7 @@ export default function App() {
                 {
                   icon: <Plane className="w-8 h-8 text-legacy-gold" />,
                   title: "Passagens Aéreas",
-                  desc: "Melhores preços do mercado com suporte completo na reserva e marcação de assentos."
+                  desc: "Melhores preços do mercado com suporte completo na reserva e pós venda."
                 },
                 {
                   icon: <ShieldCheck className="w-8 h-8 text-legacy-gold" />,
@@ -251,7 +257,7 @@ export default function App() {
                 {
                   icon: <ClipboardList className="w-8 h-8 text-legacy-gold" />,
                   title: "Assessoria Especializada",
-                  desc: "Ajuda personalizada com documentação, vistos e orientações cruciais para o embarque."
+                  desc: "Ajuda personalizada com documentação, vistos e orientações cruciais para a solicitação do Visto."
                 }
               ].map((item, i) => (
                 <motion.div 
@@ -430,6 +436,8 @@ export default function App() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl gold-gradient text-legacy-navy font-black text-xl shadow-2xl shadow-legacy-gold/30"
             >
               <MessageCircle className="w-6 h-6" />
@@ -454,10 +462,10 @@ export default function App() {
                 Agência especializada em assessoria completa para quem deseja viajar, trabalhar ou morar em Portugal com total segurança e economia.
               </p>
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
+                <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
+                <a href={siteConfig.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
                   <Facebook className="w-5 h-5" />
                 </a>
               </div>
@@ -472,11 +480,11 @@ export default function App() {
                 </li>
                 <li className="flex items-center gap-3">
                   <Clock className="w-4 h-4 text-legacy-gold" />
-                  Seg - Sex: 09h às 19h
+                  Seg - Sab: 09h às 18h
                 </li>
                 <li className="flex items-center gap-3">
                   <MapPin className="w-4 h-4 text-legacy-gold" />
-                  Atendimento Online Global
+                  Atendimento Online
                 </li>
               </ul>
             </div>
