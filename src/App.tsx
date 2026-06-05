@@ -50,7 +50,7 @@ export default function App() {
     },
     {
       name: "Carlos Eduardo",
-      role: "Nômade Digital",
+      role: "Visto D1",
       text: "Profissionalismo do começo ao fim. Me ajudaram a encontrar as melhores rotas e me orientaram perfeitamente sobre a documentação. Recomendo de olhos fechados.",
       image: "https://i.pravatar.cc/150?img=11"
     },
@@ -245,9 +245,9 @@ export default function App() {
                     onChange={(e) => setQuoteService(e.target.value)}
                     className="w-full bg-[#0d1424] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-legacy-gold/50 transition-colors cursor-pointer"
                   >
-                    <option value="Assessoria Completa para Portugal">Assessoria Completa para Portugal</option>
-                    <option value="Passagens Aéreas">Passagens Aéreas Baratas</option>
-                    <option value="Seguro Viagem">Seguro Viagem para Visto</option>
+                    <option value="Passagens Aéreas Baratas">Passagens Aéreas Baratas</option>
+                    <option value="Assessoria Completa Para Visto">Assessoria Completa Para Visto</option>
+                    <option value="Seguro Viagem Para Visto">Seguro Viagem para Visto</option>
                   </select>
                 </div>
 
