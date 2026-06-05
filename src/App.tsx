@@ -246,8 +246,8 @@ export default function App() {
                     className="w-full bg-[#0d1424] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-legacy-gold/50 transition-colors cursor-pointer"
                   >
                     <option value="Assessoria Completa para Portugal">Assessoria Completa para Portugal</option>
-                    <option value="Passagens Aéreas">Passagens Aéreas</option>
-                    <option value="Seguro Viagem">Seguro Viagem</option>
+                    <option value="Passagens Aéreas">Passagens Aéreas Baratas</option>
+                    <option value="Seguro Viagem">Seguro Viagem para Visto</option>
                   </select>
                 </div>
 
