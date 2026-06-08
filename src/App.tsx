@@ -11,9 +11,9 @@ import {
   ShieldCheck, 
   ClipboardList, 
   CheckCircle2, 
-  ArrowRight, 
-  Instagram, 
-  Facebook, 
+  ArrowRight,
+  Instagram,
+  Facebook,
   MessageCircle,
   MapPin,
   Clock,
@@ -39,19 +39,20 @@ const staggerContainer = {
 };
 
 export default function App() {
-  const whatsappUrl = getWhatsappUrl();
-
+  const [activeTab, setActiveTab] = useState(0);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  
   const testimonials = [
     {
       name: "Mariana Silva",
-      role: "Estudante",
-      text: "A Real Legacy cuidou de absolutamente tudo para meu intercâmbio. Desde a passagem até o seguro viagem, não precisei me preocupar com nada. Serviço impecável!",
-      image: "https://i.pravatar.cc/150?img=1"
+      role: "Assessoria Completa para Portugal",
+      text: "A equipe da Real Legacy foi impecável do início ao fim. Conseguimos nossa documentação muito mais rápido do que esperávamos. Atendimento 5 estrelas!",
+      image: "https://i.pravatar.cc/150?img=47"
     },
     {
-      name: "Carlos Eduardo",
-      role: "Visto D1",
-      text: "Profissionalismo do começo ao fim. Me ajudaram a encontrar as melhores rotas e me orientaram perfeitamente sobre a documentação. Recomendo de olhos fechados.",
+      name: "Pedro Alves",
+      role: "Passagens e Roteiro",
+      text: "Encontraram passagens com preços que não achamos em nenhum outro lugar. A viagem foi perfeita e sem nenhuma dor de cabeça.",
       image: "https://i.pravatar.cc/150?img=11"
     },
     {
@@ -62,16 +63,14 @@ export default function App() {
     }
   ];
 
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
   // Formulário de Cotação Rápida
   const [quoteName, setQuoteName] = useState("");
-  const [quoteService, setQuoteService] = useState("Assessoria Completa para Portugal");
-  const [quoteTime, setQuoteTime] = useState("O quanto antes");
+  const [quotePhone, setQuotePhone] = useState("");
 
   const handleQuoteClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const nameStr = quoteName.trim() ? ` Me chamo ${quoteName.trim()}.` : "";
-    const txt = `Olá!${nameStr} Gostaria de uma cotação para *${quoteService}*. Planejo para *${quoteTime}*.`;
+    const phoneStr = quotePhone.trim() ? ` Meu WhatsApp para contato é ${quotePhone.trim()}.` : "";
+    const txt = `Olá!${nameStr}${phoneStr} Gostaria de fazer uma cotação de passagens.`;
     const finalUrl = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(txt)}`;
     e.currentTarget.href = finalUrl;
   };
@@ -85,486 +84,367 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col selection:bg-legacy-gold selection:text-legacy-navy relative">
-      {/* Floating WhatsApp Button */}
-      <motion.a
-        href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        initial={{ opacity: 0, scale: 0, y: 100 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ delay: 1, type: "spring", stiffness: 260, damping: 20 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 right-6 z-[100] w-16 h-16 rounded-full bg-[#25D366] shadow-2xl shadow-green-500/40 flex items-center justify-center text-white cursor-pointer group"
-      >
-        <div className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20" />
-        <svg 
-          viewBox="0 0 24 24" 
-          className="w-9 h-9 fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-        <span className="absolute right-full mr-5 bg-legacy-navy/95 backdrop-blur-md text-white px-4 py-2.5 rounded-xl text-sm font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0 whitespace-nowrap border border-white/20 shadow-2xl pointer-events-none font-display tracking-wide flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
-          Fazer Cotação Imediata
-        </span>
-      </motion.a>
-
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-legacy-navy/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
-          >
-            <img src={siteConfig.logoUrl} alt={siteConfig.companyName} className="h-12 w-auto object-contain" referrerPolicy="no-referrer" />
-            <span className="font-display font-bold text-xl tracking-tight hidden sm:block">
-              REAL <span className="text-legacy-gold">LEGACY</span>
+    <div className="min-h-screen bg-[#050a15] text-gray-100 font-sans selection:bg-legacy-gold/30">
+      {/* HEADER EXCLUSIVO */}
+      <header className="fixed w-full top-0 z-50 bg-[#050a15]/90 backdrop-blur-md border-b border-white/5">
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-legacy-gold to-legacy-light flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+              <Plane className="w-5 h-5 text-[#050a15] -rotate-45" />
+            </div>
+            <span className="text-2xl font-bold tracking-tight text-white">
+              <span className="text-legacy-gold">Real</span>Legacy
             </span>
-          </motion.div>
-          
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-            <a href="#servicos" className="relative hover:text-legacy-gold transition-colors group">
-              Serviços
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-legacy-gold transition-all group-hover:w-full" />
-            </a>
-            <a href="#beneficios" className="relative hover:text-legacy-gold transition-colors group">
-              Sobre Nós
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-legacy-gold transition-all group-hover:w-full" />
-            </a>
-            <a href={whatsappUrl} className="relative hover:text-legacy-gold transition-colors group">
-              Cotação
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-legacy-gold transition-all group-hover:w-full" />
-            </a>
           </div>
-
-          <motion.a 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            href={whatsappUrl}
-            target="_blank"
+          
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="#servicos" className="text-gray-300 hover:text-legacy-gold transition-colors">Serviços</a>
+            <a href="#diferenciais" className="text-gray-300 hover:text-legacy-gold transition-colors">Diferenciais</a>
+            <a href="#depoimentos" className="text-gray-300 hover:text-legacy-gold transition-colors">Depoimentos</a>
+            <a 
+              href={getWhatsappUrl()}
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-legacy-gold hover:text-[#050a15] hover:border-legacy-gold transition-all duration-300"
+            >
+              Falar com Consultor
+            </a>
+          </nav>
+          
+          {/* Mobile Menu Button - Simplificado para o escopo */}
+          <a 
+            href={getWhatsappUrl()}
+            target="_blank" 
             rel="noopener noreferrer"
-            className="px-5 py-2.5 rounded-full gold-gradient text-legacy-navy font-bold text-sm hover:scale-105 active:scale-95 transition-all shadow-lg shadow-legacy-gold/20 flex items-center gap-2"
+            className="md:hidden p-2 text-legacy-gold"
           >
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
-            Falar com Especialista
-          </motion.a>
+            <MessageCircle className="w-6 h-6" />
+          </a>
         </div>
-      </nav>
+      </header>
 
-      <main className="flex-grow pt-20">
-        {/* Hero Section */}
-        <section className="relative py-24 lg:py-32 overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-legacy-gold/5 rounded-full blur-[120px] -z-10" />
-          
-          <div className="w-full relative z-10 px-0 sm:px-6 mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-12"
-            >
-              <img 
-                src={siteConfig.logoUrl} 
-                alt={`${siteConfig.companyName} Logo`} 
-                className="w-full h-auto sm:rounded-3xl shadow-2xl shadow-legacy-gold/10 object-cover"
-                referrerPolicy="no-referrer"
-              />
-            </motion.div>
+      <main className="pt-20">
+        {/* HERO SECTION DE ALTA CONVERSÃO */}
+        <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+          {/* Constelação bg */}
+          <div className="absolute inset-0 z-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-legacy-gold/20 rounded-full mix-blend-screen filter blur-[100px] opacity-50 animate-pulse-slow"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/30 rounded-full mix-blend-screen filter blur-[100px] opacity-50"></div>
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555881400-74d7acaacd8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center opacity-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#050a15] via-[#050a15]/80 to-[#050a15]"></div>
           </div>
 
-          <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-legacy-gold/10 border border-legacy-gold/40 text-legacy-gold text-sm font-black uppercase tracking-widest mb-6 shadow-[0_0_30px_rgba(212,175,55,0.3)]"
-            >
+          <div className="container mx-auto px-6 relative z-10 py-20 pb-32">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
               <motion.div 
-                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.7, 1] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="w-2.5 h-2.5 rounded-full bg-legacy-gold shadow-[0_0_8px_#D4AF37]" 
-              />
-              Especialista em Brasil x Portugal
-            </motion.div>
-            
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-5xl md:text-7xl font-bold mb-8 leading-[1.1]"
-            >
-              Transformando seu sonho <br />
-              de <span className="gold-text-gradient">Portugal</span> em realidade.
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 mb-2"
-            >
-              {siteConfig.heroDescription}
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="mt-12 max-w-4xl mx-auto glass-card p-6 md:p-8 rounded-3xl border-legacy-gold/30 shadow-2xl shadow-legacy-gold/10 relative text-left"
-            >
-              <div className="absolute top-0 right-0 w-48 h-48 bg-legacy-gold/10 blur-[60px] -z-10 rounded-full" />
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-legacy-gold/10 border border-legacy-gold/20 text-legacy-gold text-sm font-medium mb-4"
+              >
+                <Star className="w-4 h-4 fill-legacy-gold" />
+                <span>Agência Nº1 em Viagens para Portugal</span>
+              </motion.div>
               
-              <h3 className="text-xl md:text-2xl font-bold mb-6 flex items-center gap-3">
-                Cotação Rápida Via WhatsApp
-                <div className="px-2 py-1 rounded bg-[#25D366]/20 text-[#25D366] text-xs font-bold flex items-center gap-1.5 border border-[#25D366]/30">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
-                  Online
-                </div>
-              </h3>
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-[1.1]"
+              >
+                🇵🇹 Passagens para <span className="gold-text-gradient">Portugal</span> <br />
+                com Atendimento Especializado
+              </motion.h1>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 relative z-20">
-                <div className="space-y-2">
-                  <label className="text-sm text-gray-400 font-medium">Nome</label>
-                  <input 
-                    type="text" 
-                    value={quoteName}
-                    onChange={(e) => setQuoteName(e.target.value)}
-                    placeholder="Seu nome"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-legacy-gold/50 transition-colors focus:ring-1 focus:ring-legacy-gold/50"
-                  />
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="mt-4 text-xl md:text-2xl font-medium text-white mb-1"
+              >
+                ✈️ Passagens Brasil → Portugal a partir de <span className="gold-text-gradient font-bold">R$ 1.847</span>
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-sm text-gray-400 mb-8 max-w-2xl mx-auto"
+              >
+                Valores sujeitos à disponibilidade.
+              </motion.p>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="max-w-3xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-3xl relative overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-legacy-gold to-transparent opacity-50"></div>
+                
+                <h3 className="text-xl font-medium mb-6 text-left flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-legacy-gold/20 flex items-center justify-center text-legacy-gold">
+                    ⚡
+                  </span>
+                  <div>
+                    <span className="block text-white">Receba sua cotação em 15 minutos</span>
+                    <span className="block text-sm text-gray-400 font-normal mt-1">Preencha os dados abaixo e te chamaremos no WhatsApp.</span>
+                  </div>
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 relative z-20">
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-400 font-medium text-left block">Nome</label>
+                    <input 
+                      type="text" 
+                      value={quoteName}
+                      onChange={(e) => setQuoteName(e.target.value)}
+                      placeholder="Qual o seu nome?"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-legacy-gold/50 transition-colors focus:ring-1 focus:ring-legacy-gold/50 text-left"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-400 font-medium text-left block">WhatsApp</label>
+                    <input 
+                      type="tel" 
+                      value={quotePhone}
+                      onChange={(e) => setQuotePhone(e.target.value)}
+                      placeholder="(00) 00000-0000"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-legacy-gold/50 transition-colors focus:ring-1 focus:ring-legacy-gold/50 text-left"
+                    />
+                  </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm text-gray-400 font-medium">Serviço</label>
-                  <select 
-                    value={quoteService}
-                    onChange={(e) => setQuoteService(e.target.value)}
-                    className="w-full bg-[#0d1424] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-legacy-gold/50 transition-colors cursor-pointer"
-                  >
-                    <option value="Passagens Aéreas Baratas">Passagens Aéreas Baratas</option>
-                    <option value="Assessoria Completa Para Visto">Assessoria Completa Para Visto</option>
-                    <option value="Seguro Viagem Para Visto">Seguro Viagem para Visto</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm text-gray-400 font-medium">Prazo</label>
-                  <select 
-                    value={quoteTime}
-                    onChange={(e) => setQuoteTime(e.target.value)}
-                    className="w-full bg-[#0d1424] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-legacy-gold/50 transition-colors cursor-pointer"
-                  >
-                    <option value="O quanto antes">O quanto antes</option>
-                    <option value="Próximos 3 meses">Próximos 3 meses</option>
-                    <option value="Próximos 6 meses">Próximos 6 meses</option>
-                    <option value="Apenas planejando">Apenas planejando</option>
-                  </select>
-                </div>
-              </div>
-              
-              <a 
-                href="#"
-                onClick={handleQuoteClick}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-8 py-5 rounded-xl relative overflow-hidden group gold-gradient text-legacy-navy font-black text-lg transition-all flex items-center justify-center gap-3 animate-pulse-glow"
-              >
-                <div className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full skew-x-12 group-hover:animate-shimmer" />
-                <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                Enviar e Iniciar Conversa
-              </a>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Services Section */}
-        <section id="servicos" className="py-24 bg-legacy-blue-dark/50 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-legacy-gold/5 blur-[100px] -z-10" />
-          
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16 relative"
-            >
-              <div className="w-12 h-1 gold-gradient mx-auto mb-6 rounded-full" />
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-                O que <span className="gold-text-gradient">oferecemos</span>
-              </h2>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                Comprometimento e excelência em cada etapa da sua jornada para a Europa.
-              </p>
-            </motion.div>
-            
-            <motion.div 
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, margin: "-100px" }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6"
-            >
-              {[
-                {
-                  icon: <Plane className="w-8 h-8 text-legacy-gold" />,
-                  title: "Passagens Aéreas",
-                  desc: "Melhores preços do mercado com suporte completo na reserva e pós venda."
-                },
-                {
-                  icon: <ShieldCheck className="w-8 h-8 text-legacy-gold" />,
-                  title: "Seguro Viagem",
-                  desc: "Seguro obrigatório para solicitação do visto, com cobertura completa para sua segurança."
-                },
-                {
-                  icon: <ClipboardList className="w-8 h-8 text-legacy-gold" />,
-                  title: "Assessoria Especializada",
-                  desc: "Ajuda personalizada com documentação, vistos e orientações cruciais para a solicitação do Visto."
-                }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  variants={fadeIn}
-                  whileHover={{ y: -10 }}
-                  className="glass-card p-8 hover:bg-white/10 transition-all group"
+                <a 
+                  href="#"
+                  onClick={handleQuoteClick}
+                  className="group relative w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-legacy-gold to-legacy-light text-[#050a15] font-bold rounded-xl text-lg transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] overflow-hidden hover:scale-[1.01]"
                 >
-                  <div className="mb-6 p-3 w-fit rounded-xl bg-legacy-gold/10 group-hover:bg-legacy-gold/20 transition-colors">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-gray-400 leading-relaxed text-sm">
-                    {item.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
+                  <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                  <span>Quero Minha Cotação Gratuita</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+                <p className="text-xs text-gray-500 mt-4 text-center">Nenhum compromisso financeiro ao solicitar cotação.</p>
+              </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* Benefits Section */}
-        <section id="beneficios" className="py-24 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="text-3xl md:text-5xl font-bold mb-8">Por que escolher a <span className="gold-text-gradient">Real Legacy?</span></h2>
-              <div className="space-y-6">
-                {[
-                  "Atendimento rápido e personalizado via WhatsApp",
-                  "Suporte total antes, durante e depois da sua viagem",
-                  "Consultores especialistas em rotas para Portugal",
-                  "Foco em segurança, economia e conformidade legal"
-                ].map((benefit, i) => (
-                  <motion.div 
-                    key={i} 
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex items-start gap-4"
+        {/* NOSSOS SERVIÇOS (TABS INTERATIVAS) */}
+        <section id="servicos" className="py-24 bg-[#0a101e] relative">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <span className="text-legacy-gold font-medium tracking-wider uppercase text-sm">O que fazemos</span>
+              <h2 className="text-3xl md:text-5xl font-bold mt-2">Soluções Completas de Viagem</h2>
+            </div>
+            
+            <div className="max-w-5xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-4 mb-12">
+                {siteConfig.services.map((service, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTab(index)}
+                    className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                      activeTab === index 
+                        ? "bg-legacy-gold text-[#050a15] shadow-[0_0_20px_rgba(212,175,55,0.3)]" 
+                        : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
+                    }`}
                   >
-                    <div className="mt-1 p-1 rounded-full bg-legacy-gold/20 flex-shrink-0">
-                      <CheckCircle2 className="w-5 h-5 text-legacy-gold" />
-                    </div>
-                    <p className="text-lg text-gray-300">{benefit}</p>
-                  </motion.div>
+                    {index === 0 && <Plane className="w-4 h-4" />}
+                    {index === 1 && <ClipboardList className="w-4 h-4" />}
+                    {index === 2 && <ShieldCheck className="w-4 h-4" />}
+                    {service.title}
+                  </button>
                 ))}
               </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, rotate: 5 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="relative"
-            >
-              <div className="aspect-square rounded-3xl overflow-hidden glass-card p-2 border-legacy-gold/20">
-                <div className="w-full h-full bg-legacy-blue-light rounded-2xl flex flex-col items-center justify-center p-12 text-center">
-                  <motion.div 
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-16 h-16 gold-gradient rounded-2xl flex items-center justify-center mb-6 rotate-45 shadow-xl shadow-legacy-gold/20"
-                  >
-                    <Plane className="w-8 h-8 text-legacy-navy -rotate-45" />
-                  </motion.div>
-                  <h3 className="text-2xl font-bold mb-4">Sua jornada começa aqui</h3>
-                  <p className="text-gray-400">Milhares de clientes já realizaram o sonho de morar ou visitar Portugal com nossa ajuda.</p>
-                </div>
-              </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-legacy-gold/10 rounded-full blur-3xl opacity-50" />
-            </motion.div>
+              
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="bg-[#050a15] rounded-3xl p-8 md:p-12 border border-white/5 relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-legacy-gold/5 rounded-full filter blur-[80px]"></div>
+                  
+                  <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
+                    <div>
+                      <h3 className="text-3xl font-bold mb-4">{siteConfig.services[activeTab].title}</h3>
+                      <p className="text-gray-400 mb-8 leading-relaxed text-lg">
+                        {siteConfig.services[activeTab].description}
+                      </p>
+                      <ul className="space-y-4 mb-8">
+                        {siteConfig.services[activeTab].features.map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-legacy-gold shrink-0 mt-0.5" />
+                            <span className="text-gray-300">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <a 
+                        href={`${getWhatsappUrl()}&text=${encodeURIComponent(`Olá, gostaria de saber mais sobre o serviço de ${siteConfig.services[activeTab].title}.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 text-white hover:bg-legacy-gold hover:text-[#050a15] transition-all border border-white/10 hover:border-legacy-gold"
+                      >
+                        Tenho interesse <ArrowRight className="w-4 h-4" />
+                      </a>
+                    </div>
+                    
+                    <div className="relative aspect-square md:aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                      <img 
+                        src={
+                          activeTab === 0 ? "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" :
+                          activeTab === 1 ? "https://images.unsplash.com/photo-1554252116-2dcd481ec0a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" :
+                          "https://images.unsplash.com/photo-1544866092-1935c5ef2a8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        }
+                        alt={siteConfig.services[activeTab].title}
+                        className="object-cover w-full h-full opacity-80"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#050a15] via-transparent to-transparent"></div>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        <section className="py-24 bg-legacy-blue-dark/30">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold mb-4">O que nossos <span className="gold-text-gradient">clientes dizem</span></h2>
-              <p className="text-gray-400">Histórias reais de quem confiou na Real Legacy.</p>
-            </motion.div>
+        {/* PROVA SOCIAL / DEPOIMENTOS */}
+        <section id="depoimentos" className="py-24 bg-[#050a15] relative overflow-hidden">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-legacy-gold/5 rounded-full filter blur-[100px]"></div>
+          
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold">O que nossos clientes dizem</h2>
+              <p className="text-gray-400 mt-4 text-lg">Milhares de histórias de sucesso e sonhos realizados.</p>
+            </div>
 
             <div className="max-w-4xl mx-auto relative">
-              <div className="absolute top-1/2 -left-4 md:-left-12 -translate-y-1/2 z-10">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentTestimonial}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12 relative"
+                >
+                  <Quote className="absolute top-8 right-8 text-legacy-gold/20 w-24 h-24 rotate-180" />
+                  
+                  <div className="flex gap-1 text-legacy-gold mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-legacy-gold" />
+                    ))}
+                  </div>
+                  
+                  <p className="text-xl md:text-2xl text-gray-200 leading-relaxed mb-8 relative z-10 italic">
+                    "{testimonials[currentTestimonial].text}"
+                  </p>
+                  
+                  <div className="flex items-center gap-4">
+                    <img 
+                      src={testimonials[currentTestimonial].image} 
+                      alt={testimonials[currentTestimonial].name}
+                      className="w-14 h-14 rounded-full border-2 border-legacy-gold"
+                    />
+                    <div>
+                      <h4 className="font-bold text-lg">{testimonials[currentTestimonial].name}</h4>
+                      <p className="text-legacy-gold text-sm">{testimonials[currentTestimonial].role}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="flex justify-center gap-6 mt-8">
                 <button 
                   onClick={prevTestimonial}
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full glass-card flex items-center justify-center text-legacy-gold hover:bg-legacy-gold/10 transition-colors border-legacy-gold/20"
+                  className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-legacy-gold hover:border-legacy-gold transition-colors"
                 >
-                  <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+                  <ChevronLeft className="w-6 h-6" />
                 </button>
-              </div>
-
-              <div className="absolute top-1/2 -right-4 md:-right-12 -translate-y-1/2 z-10">
+                <div className="flex items-center gap-2">
+                  {testimonials.map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`h-1.5 rounded-full transition-all duration-300 ${i === currentTestimonial ? 'w-8 bg-legacy-gold' : 'w-2 bg-white/20'}`}
+                    />
+                  ))}
+                </div>
                 <button 
                   onClick={nextTestimonial}
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full glass-card flex items-center justify-center text-legacy-gold hover:bg-legacy-gold/10 transition-colors border-legacy-gold/20"
+                  className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-legacy-gold hover:border-legacy-gold transition-colors"
                 >
-                  <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+                  <ChevronRight className="w-6 h-6" />
                 </button>
-              </div>
-
-              <div className="overflow-hidden relative px-4 py-8">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentTestimonial}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -50 }}
-                    transition={{ duration: 0.3 }}
-                    className="glass-card p-8 md:p-12 text-center relative border-legacy-gold/10"
-                  >
-                    <Quote className="w-12 h-12 text-legacy-gold/20 absolute top-6 left-6" />
-                    
-                    <div className="flex justify-center gap-1 mb-6">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 fill-legacy-gold text-legacy-gold" />
-                      ))}
-                    </div>
-                    
-                    <p className="text-lg md:text-xl text-gray-300 italic mb-8 relative z-10">
-                      "{testimonials[currentTestimonial].text}"
-                    </p>
-                    
-                    <div className="flex flex-col items-center justify-center gap-3">
-                      <img 
-                        src={testimonials[currentTestimonial].image} 
-                        alt={testimonials[currentTestimonial].name}
-                        className="w-16 h-16 rounded-full border-2 border-legacy-gold/50 object-cover"
-                      />
-                      <div>
-                        <h4 className="font-bold text-white text-lg">{testimonials[currentTestimonial].name}</h4>
-                        <span className="text-sm text-legacy-gold">{testimonials[currentTestimonial].role}</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-              
-              <div className="flex justify-center gap-2 mt-6">
-                {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentTestimonial(i)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all ${
-                      i === currentTestimonial ? "bg-legacy-gold w-6" : "bg-white/20 hover:bg-white/40"
-                    }`}
-                  />
-                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="py-32 text-center relative overflow-hidden">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto px-6"
-          >
-            <h2 className="text-4xl md:text-6xl font-bold mb-8">Nossa equipe <span className="gold-text-gradient">está online agora!</span></h2>
-            <p className="text-xl text-gray-400 mb-12">Clique abaixo e faça sua cotação em minutos, sem enrolação.</p>
-            <motion.a 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-10 py-6 rounded-2xl relative overflow-hidden group gold-gradient text-legacy-navy font-black text-xl transition-all animate-pulse-glow"
-            >
-              <div className="absolute inset-0 w-full h-full bg-white/30 -translate-x-full skew-x-12 group-hover:animate-shimmer" />
-              <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current animate-bounce" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Cotar via WhatsApp Agora
-            </motion.a>
-          </motion.div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-legacy-blue-dark border-t border-white/5 py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-                <img src={siteConfig.logoUrl} alt={siteConfig.companyName} className="h-10 w-auto object-contain" referrerPolicy="no-referrer" loading="lazy" />
-                <span className="font-display font-bold text-lg tracking-tight">
-                  REAL <span className="text-legacy-gold">LEGACY</span>
-                </span>
+        {/* FOOTER */}
+        <footer className="bg-[#03060c] pt-20 pb-10 border-t border-white/5">
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+              <div className="col-span-1 md:col-span-2">
+                <div className="flex items-center gap-3 mb-6">
+                  <Plane className="w-6 h-6 text-legacy-gold -rotate-45" />
+                  <span className="text-2xl font-bold tracking-tight text-white">
+                    <span className="text-legacy-gold">Real</span>Legacy
+                  </span>
+                </div>
+                <p className="text-gray-400 max-w-sm mb-8 leading-relaxed">
+                  Referência em assessoria de viagens e vistos. Conectando pessoas a novos destinos com segurança, economia e transparência.
+                </p>
+                <div className="flex gap-4">
+                  <a href={siteConfig.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-legacy-gold hover:text-[#050a15] transition-colors border border-white/10">
+                    <Instagram className="w-5 h-5" />
+                  </a>
+                  <a href={siteConfig.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-legacy-gold hover:text-[#050a15] transition-colors border border-white/10">
+                    <Facebook className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
-              <p className="text-gray-400 max-w-sm mb-6">
-                Agência especializada em assessoria completa para quem deseja viajar, trabalhar ou morar em Portugal com total segurança e economia.
-              </p>
-              <div className="flex gap-4">
-                <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href={siteConfig.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
-                  <Facebook className="w-5 h-5" />
-                </a>
+              
+              <div>
+                <h4 className="text-white font-bold mb-6">Links Rápidos</h4>
+                <ul className="space-y-4 text-gray-400">
+                  <li><a href="#servicos" className="hover:text-legacy-gold transition-colors">Nossos Serviços</a></li>
+                  <li><a href="#diferenciais" className="hover:text-legacy-gold transition-colors">Por que nos escolher</a></li>
+                  <li><a href="#depoimentos" className="hover:text-legacy-gold transition-colors">Clientes Satisfeitos</a></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="text-white font-bold mb-6">Contato</h4>
+                <ul className="space-y-4 text-gray-400">
+                  <li className="flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-legacy-gold shrink-0 mt-0.5" />
+                    <span>WhatsApp Comercial<br/><a href={getWhatsappUrl()} className="text-white hover:text-legacy-gold transition-colors">Clique aqui para falar</a></span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-legacy-gold shrink-0 mt-0.5" />
+                    <span>Segunda a Sexta<br/>09:00 - 18:00</span>
+                  </li>
+                </ul>
               </div>
             </div>
             
-            <div>
-              <h4 className="font-bold mb-6 text-white uppercase text-xs tracking-widest">Contato</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-legacy-gold" />
-                  {siteConfig.phoneDisplay}
-                </li>
-                <li className="flex items-center gap-3">
-                  <Clock className="w-4 h-4 text-legacy-gold" />
-                  Seg - Sab: 09h às 18h
-                </li>
-                <li className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-legacy-gold" />
-                  Atendimento Online
-                </li>
-              </ul>
+            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-gray-500 text-sm">
+                &copy; {new Date().getFullYear()} Real Legacy Viagens. Todos os direitos reservados.
+              </p>
+              <div className="flex gap-6 text-sm text-gray-500">
+                <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
+                <a href="#" className="hover:text-white transition-colors">Privacidade</a>
+              </div>
             </div>
           </div>
-          
-          <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-            <p>Real Legacy © 2026 - Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </main>
     </div>
   );
 }
