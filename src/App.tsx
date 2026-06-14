@@ -12,8 +12,10 @@ import {
   ShieldCheck, 
   ClipboardList, 
   CircleCheck, 
+  ArrowRight, 
   Instagram, 
   Facebook, 
+  MessageCircle,
   MapPin,
   Clock,
   Phone,
@@ -64,16 +66,11 @@ export function HomePage() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   // Formulário de Cotação Rápida
-  const [quoteName, setQuoteName] = useState("");
-  const [quotePhone, setQuotePhone] = useState("");
-
   const navigate = useNavigate();
 
   const handleQuoteClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const nameStr = quoteName.trim() ? ` Me chamo ${quoteName.trim()}.` : "";
-    const phoneStr = quotePhone.trim() ? ` Meu WhatsApp para contato é ${quotePhone.trim()}.` : "";
-    const txt = `Olá!${nameStr}${phoneStr} Gostaria de fazer uma cotação de passagens.`;
+    const txt = `Olá! Gostaria de fazer uma cotação de passagens.`;
     const finalUrl = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(txt)}`;
     
     // Armazena URL no sessionStorage para a página de obrigado
@@ -168,22 +165,7 @@ export function HomePage() {
         <section className="relative py-24 lg:py-32 overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-legacy-gold/5 rounded-full blur-[120px] -z-10" />
           
-          <div className="w-full relative z-10 px-0 sm:px-6 mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-12"
-            >
-              <img 
-                src={siteConfig.logoUrl} 
-                alt={`${siteConfig.companyName} Logo`} 
-                className="w-full h-auto sm:rounded-3xl shadow-2xl shadow-legacy-gold/10 object-cover"
-                referrerPolicy="no-referrer"
-              />
-            </motion.div>
-          </div>
-
-          <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+          <div className="max-w-7xl mx-auto px-6 text-center relative z-10 px-0 sm:px-6">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -234,37 +216,13 @@ export function HomePage() {
             >
               <div className="absolute top-0 right-0 w-48 h-48 bg-legacy-gold/10 blur-[60px] -z-10 rounded-full" />
               
-              <h3 className="text-xl md:text-2xl font-bold mb-6 flex items-center gap-3">
+              <h3 className="text-xl md:text-2xl font-bold mb-6 flex flex-col md:flex-row items-center justify-center gap-3 text-center">
                 Cotação Rápida Via WhatsApp
                 <div className="px-2 py-1 rounded bg-[#25D366]/20 text-[#25D366] text-xs font-bold flex items-center gap-1.5 border border-[#25D366]/30">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
                   Online
                 </div>
               </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 relative z-20">
-                <div className="space-y-2">
-                  <label className="text-sm text-gray-400 font-medium">Nome</label>
-                  <input 
-                    type="text" 
-                    value={quoteName}
-                    onChange={(e) => setQuoteName(e.target.value)}
-                    placeholder="Seu nome"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-legacy-gold/50 transition-colors focus:ring-1 focus:ring-legacy-gold/50"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-sm text-gray-400 font-medium">WhatsApp</label>
-                  <input 
-                    type="text" 
-                    value={quotePhone}
-                    onChange={(e) => setQuotePhone(e.target.value)}
-                    placeholder="(00) 00000-0000"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-legacy-gold/50 transition-colors focus:ring-1 focus:ring-legacy-gold/50"
-                  />
-                </div>
-              </div>
               
               <a 
                 href="#"
@@ -279,6 +237,65 @@ export function HomePage() {
                 </svg>
                 Enviar e Iniciar Conversa
               </a>
+
+              {/* Provas Sociais Carousel */}
+              <div className="mt-8 overflow-hidden relative">
+                <p className="text-gray-400 text-sm mb-4 text-center">Nossos clientes confirmam e recomendam:</p>
+                <div className="flex w-full">
+                  <motion.div 
+                    animate={{ x: ["0%", "-100%"] }}
+                    transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
+                    className="flex gap-4 shrink-0 pr-4"
+                  >
+                    {[
+                      { nome: "João V.", tex: "Consegui excelente valor no voo!" },
+                      { nome: "Marcos P.", tex: "Rápido e atendimento nota 10." },
+                      { nome: "Larissa F.", tex: "Passagem emitida em 10 min, obrigado." },
+                      { nome: "Daniela R.", tex: "O suporte tirou todas minhas dúvidas." },
+                      { nome: "Caio M.", tex: "Economizei muito na volta de Lisboa." },
+                      { nome: "Fernanda L.", tex: "Seguro viagem resolvido sem burocracia." },
+                      { nome: "Sônia B.", tex: "Passagens para família toda compradas." },
+                      { nome: "Bruno K.", tex: "Perfeito, recomendo demais!" },
+                      { nome: "Amanda J.", tex: "Minha ida pro Porto foi tranquila." },
+                      { nome: "Luís C.", tex: "Ótimo acompanhamento pelo WhatsApp." }
+                    ].map((prova, index) => (
+                      <div key={index} className="bg-legacy-navy/60 border border-white/5 rounded-lg p-3 whitespace-nowrap text-sm text-gray-300 w-64 shadow-md bg-opacity-70">
+                        <div className="flex items-center gap-2 mb-1">
+                          <CircleCheck className="w-4 h-4 text-[#25D366]" />
+                          <span className="font-bold text-white">{prova.nome}</span>
+                        </div>
+                        <p className="overflow-hidden text-ellipsis px-1">{prova.tex}</p>
+                      </div>
+                    ))}
+                  </motion.div>
+                   <motion.div 
+                    animate={{ x: ["0%", "-100%"] }}
+                    transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
+                    className="flex gap-4 shrink-0 pr-4"
+                  >
+                    {[
+                      { nome: "João V.", tex: "Consegui excelente valor no voo!" },
+                      { nome: "Marcos P.", tex: "Rápido e atendimento nota 10." },
+                      { nome: "Larissa F.", tex: "Passagem emitida em 10 min, obrigado." },
+                      { nome: "Daniela R.", tex: "O suporte tirou todas minhas dúvidas." },
+                      { nome: "Caio M.", tex: "Economizei muito na volta de Lisboa." },
+                      { nome: "Fernanda L.", tex: "Seguro viagem resolvido sem burocracia." },
+                      { nome: "Sônia B.", tex: "Passagens para família toda compradas." },
+                      { nome: "Bruno K.", tex: "Perfeito, recomendo demais!" },
+                      { nome: "Amanda J.", tex: "Minha ida pro Porto foi tranquila." },
+                      { nome: "Luís C.", tex: "Ótimo acompanhamento pelo WhatsApp." }
+                    ].map((prova, index) => (
+                      <div key={`dup-${index}`} className="bg-legacy-navy/60 border border-white/5 rounded-lg p-3 whitespace-nowrap text-sm text-gray-300 w-64 shadow-md bg-opacity-70">
+                        <div className="flex items-center gap-2 mb-1">
+                          <CircleCheck className="w-4 h-4 text-[#25D366]" />
+                          <span className="font-bold text-white">{prova.nome}</span>
+                        </div>
+                        <p className="overflow-hidden text-ellipsis px-1">{prova.tex}</p>
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -571,10 +588,13 @@ export function HomePage() {
 
 export function ObrigadoPage() {
   useEffect(() => {
-    // Dispara evento para o Google Ads na página de obrigado
+    // Força o envio da visualização de página (page_view) para o Google Ads
+    // no momento em que a rota muda para /obrigado (SPA).
+    // Isso aciona a conversão "Carregamento da página" que foi criada no Google Ads.
     if (typeof (window as any).gtag === 'function') {
-      (window as any).gtag('event', 'generate_lead', {
-        'send_to': 'AW-17410167490'
+      console.log('Avisando o Google Ads que a página /obrigado foi acessada...');
+      (window as any).gtag('config', 'AW-17410167490', {
+        page_path: '/obrigado'
       });
     }
 
@@ -583,7 +603,7 @@ export function ObrigadoPage() {
     
     const timeout = setTimeout(() => {
       window.location.href = savedUrl;
-    }, 3000);
+    }, 1500);
 
     return () => clearTimeout(timeout);
   }, []);
