@@ -593,8 +593,12 @@ export function ObrigadoPage() {
     // Isso aciona a conversão "Carregamento da página" que foi criada no Google Ads.
     if (typeof (window as any).gtag === 'function') {
       console.log('Avisando o Google Ads que a página /obrigado foi acessada...');
-      (window as any).gtag('config', 'AW-17410167490', {
-        page_path: '/obrigado'
+      // Dispara o evento garantindo que a URL completa esteja vinculada para o Google Ads ativar sua regra de "Contém"
+      (window as any).gtag('event', 'page_view', {
+        page_title: 'Obrigado',
+        page_location: window.location.origin + '/obrigado',
+        page_path: '/obrigado',
+        send_to: 'AW-17410167490'
       });
     }
 
