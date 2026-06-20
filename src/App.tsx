@@ -345,7 +345,7 @@ export function HomePage() {
                 }
               ].map((item, i) => (
                 <motion.div 
-                  key={i}
+                   key={i}
                   variants={fadeIn}
                   whileHover={{ y: -10 }}
                   className="glass-card p-8 hover:bg-white/10 transition-all group"
@@ -588,28 +588,76 @@ export function HomePage() {
 
 export function ObrigadoPage() {
   useEffect(() => {
-    // Força o envio da visualização de página (page_view) para o Google Ads
-    // no momento em que a rota muda para /obrigado (SPA).
-    // Isso aciona a conversão "Carregamento da página" que foi criada no Google Ads.
-    if (typeof (window as any).gtag === 'function') {
-      console.log('Avisando o Google Ads que a página /obrigado foi acessada...');
-      // Dispara o evento garantindo que a URL completa esteja vinculada para o Google Ads ativar sua regra de "Contém"
-      (window as any).gtag('event', 'page_view', {
-        page_title: 'Obrigado',
-        page_location: window.location.origin + '/obrigado',
-        page_path: '/obrigado',
-        send_to: 'AW-17410167490'
-      });
-    }
+    // Flag para garantir que o redirecionamento aconteça apenas uma vez
+    let redirected = false;
 
-    // Pega a URL do whatsapp salva ou usa a padrão e redireciona após 3 segundos
+    // Pega a URL do whatsapp salva ou usa a padrão
     const savedUrl = sessionStorage.getItem('whatsappUrl') || getWhatsappUrl();
-    
-    const timeout = setTimeout(() => {
-      window.location.href = savedUrl;
+
+    // Função que executa o redirecionamento físico
+    const doRedirect = () => {
+      if (!redirected) {
+        redirected = true;
+        console.log('Redirecionando para o WhatsApp:', savedUrl);
+        window.location.href = savedUrl;
+      }
+    };
+
+    // Timeout de segurança (fallback): se após 1500ms (1.5 segundos) o Google Ads 
+    // ainda não tiver respondido ou se houver um bloqueador de anúncios que 
+    // impeça o callback do gtag de rodar, redirecionamos de qualquer forma 
+    // para não travar a experiência do usuário.
+    const safetyTimeout = setTimeout(() => {
+      console.log('Timeout de segurança atingido. Redirecionando...');
+      doRedirect();
     }, 1500);
 
-    return () => clearTimeout(timeout);
+    // Dispara as tags do Google Ads
+    if (typeof (window as any).gtag === 'function') {
+      console.log('Disparando tags do Google Ads antes do redirecionamento...');
+      
+      try {
+        // 1. Atualiza a configuração da tag para a rota atual (importante para que o Google Ads identifique o carregamento da página /obrigado no React SPA)
+        (window as any).gtag('config', 'AW-17410167490', {
+          page_title: 'Obrigado',
+          page_location: window.location.origin + '/obrigado',
+          page_path: '/obrigado'
+        });
+
+        // 2. Dispara a visualização de página personalizada com event_callback
+        (window as any).gtag('event', 'page_view', {
+          page_title: 'Obrigado',
+          page_location: window.location.origin + '/obrigado',
+          page_path: '/obrigado',
+          send_to: 'AW-17410167490',
+          event_callback: () => {
+            console.log('Google Ads confirmou o envio do evento de visualização de página!');
+            clearTimeout(safetyTimeout);
+            doRedirect();
+          }
+        });
+
+        // 3. Dispara também o evento genérico "conversion" como garantia extra de ativação no painel
+        (window as any).gtag('event', 'conversion', {
+          send_to: 'AW-17410167490',
+          event_callback: () => {
+            console.log('Google Ads confirmou o envio do evento de conversão!');
+            clearTimeout(safetyTimeout);
+            doRedirect();
+          }
+        });
+      } catch (err) {
+        console.error('Erro ao disparar tags do Google Ads:', err);
+      }
+    } else {
+      console.log('gtag não encontrado. Redirecionando imediatamente via fallback...');
+      clearTimeout(safetyTimeout);
+      doRedirect();
+    }
+
+    return () => {
+      clearTimeout(safetyTimeout);
+    };
   }, []);
 
   return (
