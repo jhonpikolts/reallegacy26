@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { 
-  Plane, 
+  Crown, 
   ShieldCheck, 
   ClipboardList, 
   CircleCheck, 
@@ -146,7 +146,7 @@ export function HomePage() {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
           >
-            <img src={siteConfig.logoUrl} alt={siteConfig.companyName} className="h-12 w-auto object-contain" referrerPolicy="no-referrer" />
+            <Crown className="w-8 h-8 text-legacy-gold" />
             <span className="font-display font-bold text-xl tracking-tight hidden sm:block">
               REAL <span className="text-legacy-gold">LEGACY</span>
             </span>
@@ -558,13 +558,13 @@ export function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-                <img src={siteConfig.logoUrl} alt={siteConfig.companyName} className="h-10 w-auto object-contain" referrerPolicy="no-referrer" loading="lazy" />
+                <Crown className="w-6 h-6 text-legacy-gold" />
                 <span className="font-display font-bold text-lg tracking-tight">
                   REAL <span className="text-legacy-gold">LEGACY</span>
                 </span>
               </div>
               <p className="text-gray-400 max-w-sm mb-6">
-                Agência especializada em assessoria completa para quem deseja viajar, trabalhar ou morar in Portugal com total segurança e economia.
+                Agência especializada em assessoria completa para quem deseja viajar, trabalhar ou morar em Portugal com total segurança e economia.
               </p>
               <div className="flex gap-4">
                 <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
