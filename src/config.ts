@@ -1,26 +1,27 @@
 export const siteConfig = {
-  // Configurações de Contato
-  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || "5521971734511", // Apenas números, com código do país (55 para Brasil) e DDD
-  phoneDisplay: import.meta.env.VITE_PHONE_DISPLAY || "+55 (21) 97173-4511", // Número formato para exibição no rodapé
-  whatsappMessage: "Olá! Gostaria de mais informações sobre os serviços da Real Legacy.",
-  email: import.meta.env.VITE_EMAIL || "contato@agenciareallegacy.com.br",
+  // Configurações Gerais do Site
+  companyName: "Real Legacy",
+  logoUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=300&q=80", // Logo ilustrativa, substitua pela sua se necessário
+  phoneDisplay: "+351 912 345 678", // Número formatado para exibição visual
   
-  // Imagens e Identidade Visual
-  // Para trocar a logo, você pode substituir o arquivo logo.png na pasta public/
-  // Ou colocar o link de uma imagem externa aqui (ex: "https://seusite.com/logo.png")
-  logoUrl: "/Logo.png",
+  // WhatsApp & Contatos
+  whatsappNumber: "351912345678", // Substitua pelo seu número real do WhatsApp com código do país (ex: 351 para Portugal)
+  email: "contato@reallegacy.com.br",
+  address: "Lisboa, Portugal",
   
   // Textos Principais
-  companyName: "Real Legacy",
-  heroDescription: "Passagens aéreas, seguro viagem e assessoria completa para sua viagem ou mudança definitiva para a Europa.",
+  heroTitle: "Assessoria Completa e Seguro Viagem para Portugal",
+  heroDescription: "Seguro viagem e assessoria completa para sua viagem ou mudança definitiva para Portugal.",
   
   // Redes Sociais
-  instagramUrl: import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/agenciareallegacy",
+  instagramUrl: import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/jhonemportugal",
   facebookUrl: import.meta.env.VITE_FACEBOOK_URL || "https://facebook.com/agenciareallegacy",
 };
 
-// URL formatada para o WhatsApp
-export const getWhatsappUrl = () => {
-  const encodedMessage = encodeURIComponent(siteConfig.whatsappMessage);
-  return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodedMessage}`;
-};
+/**
+ * Retorna a URL completa de início de conversa do WhatsApp padrão do site
+ */
+export function getWhatsappUrl() {
+  const defaultText = `Olá! Gostaria de solicitar informações sobre Assessoria Completa e Seguro Viagem.`;
+  return `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(defaultText)}`;
+}
