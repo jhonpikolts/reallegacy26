@@ -14,7 +14,6 @@ import {
   CircleCheck, 
   ArrowRight, 
   Instagram, 
-  Facebook, 
   MessageCircle,
   MapPin,
   Clock,
@@ -39,6 +38,28 @@ const staggerContainer = {
   }
 };
 
+// Memory fallback for sessionStorage to avoid crash in sandboxed/iframe environments
+let memoryWhatsappUrl: string | null = null;
+
+function setSavedWhatsappUrl(url: string) {
+  memoryWhatsappUrl = url;
+  try {
+    sessionStorage.setItem('whatsappUrl', url);
+  } catch (e) {
+    console.warn('sessionStorage is not available:', e);
+  }
+}
+
+function getSavedWhatsappUrl(): string | null {
+  if (memoryWhatsappUrl) return memoryWhatsappUrl;
+  try {
+    return sessionStorage.getItem('whatsappUrl');
+  } catch (e) {
+    console.warn('sessionStorage is not available:', e);
+    return null;
+  }
+}
+
 export function HomePage() {
   const whatsappUrl = getWhatsappUrl();
 
@@ -46,19 +67,19 @@ export function HomePage() {
     {
       name: "Mariana Silva",
       role: "Estudante",
-      text: "A Real Legacy cuidou de absolutamente tudo para meu intercâmbio. Desde a passagem até o seguro viagem, não precisei me preocupar com nada. Serviço impecável!",
+      text: "A Real Legacy cuidou de absolutamente tudo para meu intercâmbio. Desde a assessoria completa para o visto até o seguro viagem, não precisei me preocupar com nada. Serviço impecável!",
       image: "https://i.pravatar.cc/150?img=1"
     },
     {
       name: "Carlos Eduardo",
       role: "Nômade Digital",
-      text: "Profissionalismo do começo ao fim. Me ajudaram a encontrar as melhores rotas e me orientaram perfeitamente sobre a documentação. Recomendo de olhos fechados.",
+      text: "Profissionalismo do começo ao fim. Me orientaram perfeitamente sobre toda a documentação necessária para o visto e emitiram o seguro viagem obrigatório de forma rápida. Recomendo de olhos fechados.",
       image: "https://i.pravatar.cc/150?img=11"
     },
     {
       name: "Família Costa",
       role: "Assessoria Completa para Portugal",
-      text: "Fazer uma mudança internacional com duas crianças parecia um pesadelo, mas a assessoria da equipe tornou tudo tão simples e seguro. Gratidão imensa!",
+      text: "Fazer uma mudança internacional com duas crianças parecia um pesadelo, mas a assessoria completa da equipe tornou tudo tão simples e seguro. Gratidão imensa!",
       image: "https://i.pravatar.cc/150?img=33"
     }
   ];
@@ -68,13 +89,13 @@ export function HomePage() {
   // Formulário de Cotação Rápida
   const navigate = useNavigate();
 
-  const handleQuoteClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleQuoteClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const txt = `Olá! Gostaria de fazer uma cotação de passagens.`;
+    const txt = `Olá! Gostaria de solicitar informações sobre Assessoria Completa e Seguro Viagem.`;
     const finalUrl = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(txt)}`;
     
-    // Armazena URL no sessionStorage para a página de obrigado
-    sessionStorage.setItem('whatsappUrl', finalUrl);
+    // Armazena URL de forma segura
+    setSavedWhatsappUrl(finalUrl);
     
     // Redireciona para a página de obrigado
     navigate('/obrigado');
@@ -186,8 +207,8 @@ export function HomePage() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-[1.1]"
             >
-              🇵🇹 Passagens para <span className="gold-text-gradient">Portugal</span> <br />
-              com Atendimento Especializado
+              🇵🇹 <span className="gold-text-gradient">Assessoria Completa</span> e Seguro Viagem <br />
+              para <span className="gold-text-gradient">Portugal</span>
             </motion.h1>
             
             <motion.p
@@ -196,16 +217,16 @@ export function HomePage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="mt-4 text-xl md:text-2xl font-medium text-white mb-1"
             >
-              ✈️ Passagens Brasil → Portugal a partir de <span className="gold-text-gradient font-bold">R$ 1.847</span>
+              💼 Assessoria Completa por apenas <span className="gold-text-gradient font-black">250 €</span>!
             </motion.p>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-sm text-gray-400 mb-8 max-w-2xl mx-auto"
+              className="text-sm md:text-base text-gray-300 mb-8 max-w-2xl mx-auto font-medium"
             >
-              Valores sujeitos à disponibilidade.
+              🛡️ Adquira também o seu <span className="text-white font-bold">Seguro Viagem Obrigatório</span> à parte por apenas <span className="gold-text-gradient font-bold">34,90 €</span>!
             </motion.p>
             
             <motion.div 
@@ -217,26 +238,23 @@ export function HomePage() {
               <div className="absolute top-0 right-0 w-48 h-48 bg-legacy-gold/10 blur-[60px] -z-10 rounded-full" />
               
               <h3 className="text-xl md:text-2xl font-bold mb-6 flex flex-col md:flex-row items-center justify-center gap-3 text-center">
-                Cotação Rápida Via WhatsApp
+                Falar com Especialista no WhatsApp
                 <div className="px-2 py-1 rounded bg-[#25D366]/20 text-[#25D366] text-xs font-bold flex items-center gap-1.5 border border-[#25D366]/30">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
                   Online
                 </div>
               </h3>
               
-              <a 
-                href="#"
+              <button 
                 onClick={handleQuoteClick}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-8 py-5 rounded-xl relative overflow-hidden group gold-gradient text-legacy-navy font-black text-lg transition-all flex items-center justify-center gap-3 animate-pulse-glow"
+                className="w-full px-8 py-5 rounded-xl relative overflow-hidden group gold-gradient text-legacy-navy font-black text-lg transition-all flex items-center justify-center gap-3 animate-pulse-glow cursor-pointer"
               >
                 <div className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full skew-x-12 group-hover:animate-shimmer" />
                 <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                 </svg>
                 Enviar e Iniciar Conversa
-              </a>
+              </button>
 
               {/* Provas Sociais Carousel */}
               <div className="mt-8 overflow-hidden relative">
@@ -248,13 +266,13 @@ export function HomePage() {
                     className="flex gap-4 shrink-0 pr-4"
                   >
                     {[
-                      { nome: "João V.", tex: "Consegui excelente valor no voo!" },
+                      { nome: "João V.", tex: "Processo de visto super tranquilo!" },
                       { nome: "Marcos P.", tex: "Rápido e atendimento nota 10." },
-                      { nome: "Larissa F.", tex: "Passagem emitida em 10 min, obrigado." },
+                      { nome: "Larissa F.", tex: "Visto aprovado com a assessoria, obrigado!" },
                       { nome: "Daniela R.", tex: "O suporte tirou todas minhas dúvidas." },
-                      { nome: "Caio M.", tex: "Economizei muito na volta de Lisboa." },
+                      { nome: "Caio M.", tex: "Melhor assessoria para Portugal!" },
                       { nome: "Fernanda L.", tex: "Seguro viagem resolvido sem burocracia." },
-                      { nome: "Sônia B.", tex: "Passagens para família toda compradas." },
+                      { nome: "Sônia B.", tex: "Assessoria completa para toda família." },
                       { nome: "Bruno K.", tex: "Perfeito, recomendo demais!" },
                       { nome: "Amanda J.", tex: "Minha ida pro Porto foi tranquila." },
                       { nome: "Luís C.", tex: "Ótimo acompanhamento pelo WhatsApp." }
@@ -274,13 +292,13 @@ export function HomePage() {
                     className="flex gap-4 shrink-0 pr-4"
                   >
                     {[
-                      { nome: "João V.", tex: "Consegui excelente valor no voo!" },
+                      { nome: "João V.", tex: "Processo de visto super tranquilo!" },
                       { nome: "Marcos P.", tex: "Rápido e atendimento nota 10." },
-                      { nome: "Larissa F.", tex: "Passagem emitida em 10 min, obrigado." },
+                      { nome: "Larissa F.", tex: "Visto aprovado com a assessoria, obrigado!" },
                       { nome: "Daniela R.", tex: "O suporte tirou todas minhas dúvidas." },
-                      { nome: "Caio M.", tex: "Economizei muito na volta de Lisboa." },
+                      { nome: "Caio M.", tex: "Melhor assessoria para Portugal!" },
                       { nome: "Fernanda L.", tex: "Seguro viagem resolvido sem burocracia." },
-                      { nome: "Sônia B.", tex: "Passagens para família toda compradas." },
+                      { nome: "Sônia B.", tex: "Assessoria completa para toda família." },
                       { nome: "Bruno K.", tex: "Perfeito, recomendo demais!" },
                       { nome: "Amanda J.", tex: "Minha ida pro Porto foi tranquila." },
                       { nome: "Luís C.", tex: "Ótimo acompanhamento pelo WhatsApp." }
@@ -329,23 +347,23 @@ export function HomePage() {
             >
               {[
                 {
-                  icon: <Plane className="w-8 h-8 text-legacy-gold" />,
-                  title: "Passagens Aéreas",
-                  desc: "Melhores preços do mercado com suporte completo na reserva e pós venda."
+                  icon: <ClipboardList className="w-8 h-8 text-legacy-gold" />,
+                  title: "Assessoria Completa",
+                  desc: "Acompanhamento profissional completo por apenas 250 €! Checklist de documentos, formulários e tudo o que você precisa para o seu visto ou residência."
                 },
                 {
                   icon: <ShieldCheck className="w-8 h-8 text-legacy-gold" />,
-                  title: "Seguro Viagem",
-                  desc: "Seguro obrigatório para solicitação do visto, com cobertura completa para sua segurança."
+                  title: "Seguro Viagem Obrigatório",
+                  desc: "Adquira o seu seguro viagem emitido à parte por apenas 34,90 €! Cobertura integral exigida pelo Tratado de Schengen, obrigatória para sua entrada legal em Portugal."
                 },
                 {
-                  icon: <ClipboardList className="w-8 h-8 text-legacy-gold" />,
-                  title: "Assessoria Especializada",
-                  desc: "Ajuda personalizada com documentação, vistos e orientações cruciais para a solicitação do Visto."
+                  icon: <Clock className="w-8 h-8 text-legacy-gold" />,
+                  title: "Suporte Personalizado",
+                  desc: "Atendimento direto e personalizado via WhatsApp para guiar sua transição, sanar dúvidas de prazos e acompanhar cada detalhe do seu planejamento."
                 }
               ].map((item, i) => (
                 <motion.div 
-                   key={i}
+                  key={i}
                   variants={fadeIn}
                   whileHover={{ y: -10 }}
                   className="glass-card p-8 hover:bg-white/10 transition-all group"
@@ -377,7 +395,7 @@ export function HomePage() {
                 {[
                   "Atendimento rápido e personalizado via WhatsApp",
                   "Suporte total antes, durante e depois da sua viagem",
-                  "Consultores especialistas em rotas para Portugal",
+                  "Consultores especialistas em vistos e seguros para Portugal",
                   "Foco em segurança, economia e conformidade legal"
                 ].map((benefit, i) => (
                   <motion.div 
@@ -411,7 +429,7 @@ export function HomePage() {
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     className="w-16 h-16 gold-gradient rounded-2xl flex items-center justify-center mb-6 rotate-45 shadow-xl shadow-legacy-gold/20"
                   >
-                    <Plane className="w-8 h-8 text-legacy-navy -rotate-45" />
+                    <ClipboardList className="w-8 h-8 text-legacy-navy -rotate-45" />
                   </motion.div>
                   <h3 className="text-2xl font-bold mb-4">Sua jornada começa aqui</h3>
                   <p className="text-gray-400">Milhares de clientes já realizaram o sonho de morar ou visitar Portugal com nossa ajuda.</p>
@@ -515,7 +533,7 @@ export function HomePage() {
             className="max-w-3xl mx-auto px-6"
           >
             <h2 className="text-4xl md:text-6xl font-bold mb-8">Nossa equipe <span className="gold-text-gradient">está online agora!</span></h2>
-            <p className="text-xl text-gray-400 mb-12">Clique abaixo e faça sua cotação em minutos, sem enrolação.</p>
+            <p className="text-xl text-gray-400 mb-12">Clique abaixo e fale com um especialista para iniciar sua assessoria e emitir seu seguro viagem.</p>
             <motion.a 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -528,7 +546,7 @@ export function HomePage() {
               <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current animate-bounce" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
-              Cotar via WhatsApp Agora
+              Solicitar Assessoria & Seguro
             </motion.a>
           </motion.div>
         </section>
@@ -546,14 +564,11 @@ export function HomePage() {
                 </span>
               </div>
               <p className="text-gray-400 max-w-sm mb-6">
-                Agência especializada em assessoria completa para quem deseja viajar, trabalhar ou morar em Portugal com total segurança e economia.
+                Agência especializada em assessoria completa para quem deseja viajar, trabalhar ou morar in Portugal com total segurança e economia.
               </p>
               <div className="flex gap-4">
                 <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
                   <Instagram className="w-5 h-5" />
-                </a>
-                <a href={siteConfig.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-legacy-gold transition-colors hover:border-legacy-gold/50">
-                  <Facebook className="w-5 h-5" />
                 </a>
               </div>
             </div>
@@ -587,19 +602,40 @@ export function HomePage() {
 }
 
 export function ObrigadoPage() {
+  const savedUrl = getSavedWhatsappUrl() || getWhatsappUrl();
+
   useEffect(() => {
     // Flag para garantir que o redirecionamento aconteça apenas uma vez
     let redirected = false;
-
-    // Pega a URL do whatsapp salva ou usa a padrão
-    const savedUrl = sessionStorage.getItem('whatsappUrl') || getWhatsappUrl();
 
     // Função que executa o redirecionamento físico
     const doRedirect = () => {
       if (!redirected) {
         redirected = true;
         console.log('Redirecionando para o WhatsApp:', savedUrl);
-        window.location.href = savedUrl;
+        
+        try {
+          const isIframe = window.self !== window.top;
+          if (isIframe) {
+            // Em ambiente de iframe (ex: visualização do AI Studio),
+            // tentamos redirecionar a janela pai (top-level) para evitar restrições de X-Frame-Options
+            try {
+              window.top!.location.href = savedUrl;
+            } catch (err) {
+              console.warn("Falha ao redirecionar window.top, tentando window.open ou alteração direta:", err);
+              // Como fallback para sandbox restrito de iframe, tentamos abrir em uma nova aba
+              window.open(savedUrl, '_blank');
+              // Também aplicamos localmente para garantir o redirecionamento como último recurso
+              window.location.href = savedUrl;
+            }
+          } else {
+            // Em ambiente de produção normal (fora de iframe), redirecionamos a aba atual diretamente
+            window.location.href = savedUrl;
+          }
+        } catch (e) {
+          console.error("Falha no redirecionamento avançado, usando fallback:", e);
+          window.location.href = savedUrl;
+        }
       }
     };
 
@@ -658,7 +694,7 @@ export function ObrigadoPage() {
     return () => {
       clearTimeout(safetyTimeout);
     };
-  }, []);
+  }, [savedUrl]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-legacy-navy text-white px-6">
@@ -674,10 +710,27 @@ export function ObrigadoPage() {
         <p className="text-xl text-gray-300 mb-8">
           Você será redirecionado para o nosso <span className="text-[#25D366] font-bold">WhatsApp</span> em instantes...
         </p>
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-center gap-2 mb-8">
           <div className="w-3 h-3 rounded-full bg-legacy-gold animate-bounce" style={{ animationDelay: "0ms" }} />
           <div className="w-3 h-3 rounded-full bg-legacy-gold animate-bounce" style={{ animationDelay: "150ms" }} />
           <div className="w-3 h-3 rounded-full bg-legacy-gold animate-bounce" style={{ animationDelay: "300ms" }} />
+        </div>
+
+        <div className="border-t border-white/10 pt-6">
+          <p className="text-sm text-gray-400 mb-4">Se o redirecionamento automático não iniciar, clique no botão abaixo:</p>
+          <motion.a 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            href={savedUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-[#25D366] text-white font-black text-base hover:bg-[#20ba56] transition-all shadow-lg shadow-green-500/20"
+          >
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Falar no WhatsApp
+          </motion.a>
         </div>
       </motion.div>
     </div>
